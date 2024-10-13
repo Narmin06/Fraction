@@ -2,16 +2,28 @@
 using namespace std;
 
 class Fraction {
-public:
 	int numerator;
 	int denumerator;
+public:
 
 	Fraction(int numerator, int denumerator) {
 		this->numerator = numerator;
 		this->denumerator = denumerator;
 	}
 
-	Fraction Addition(Fraction& fraction) {
+
+	void Simplify() {
+		int number = 2;
+		for (int i = 2; i <= numerator && i <= denumerator; i++) {
+			if ((this->numerator) % number == 0 && (this->denumerator) % number == 0) {
+				number = i;
+			}
+		}
+		this->numerator = (this->numerator) / number;
+		this->denumerator = (this->denumerator) / number;
+	}
+
+	Fraction Addition(const Fraction& fraction) {
 		int new_num;
 		int new_denum;
 		if (this->denumerator == fraction.denumerator) {
@@ -23,10 +35,12 @@ public:
 			new_denum = this->denumerator * fraction.denumerator;
 			new_num = (this->numerator * fraction.denumerator) + (this->denumerator * fraction.numerator);
 		}
-		return Fraction(new_num, new_denum);
+		Fraction result(new_num, new_denum); 
+		result.Simplify();
+		return result;
 	}
 
-	Fraction Subtraction(Fraction& fraction) {
+	Fraction Subtraction(const Fraction& fraction) {
 		int new_num;
 		int new_denum;
 		if (this->denumerator == fraction.denumerator) {
@@ -38,29 +52,75 @@ public:
 			new_denum = this->denumerator * fraction.denumerator;
 			new_num = (this->numerator * fraction.denumerator) - (this->denumerator * fraction.numerator);
 		}
-		return Fraction(new_num, new_denum);
+		Fraction result(new_num, new_denum);
+		result.Simplify();
+		return result;
 	}
 
 
-	Fraction Multiplied(Fraction& fraction) {
+	Fraction Multiplied(const Fraction& fraction) {
 		int new_num;
 		int new_denum;
 		new_num = this->numerator * fraction.numerator;
 		new_denum = this->denumerator * fraction.denumerator;
-		return Fraction(new_num, new_denum);
+		Fraction result(new_num, new_denum);
+		result.Simplify();
+		return result;
 	}
 
-	Fraction Division(Fraction& fraction) {
+	Fraction Division(const Fraction& fraction) {
 		int new_num;
 		int new_denum;
 		new_num = this->numerator * fraction.denumerator;
 		new_denum = this->denumerator * fraction.numerator;
-		return Fraction(new_num, new_denum);
+		Fraction result(new_num, new_denum);
+		result.Simplify();
+		return result;
 	}
+
 
 	void Show(Fraction fraction) {
 		cout << fraction.numerator << "/" << fraction.denumerator;
 	}
+
+	int GetNumerator() const {
+		return numerator;
+	}
+
+	void SetNumerator() {
+		int new_numerator = this->numerator;
+		while (true) {
+			if (new_numerator == 0) {
+				cout << "Enter new numerator: ";
+				cin >> new_numerator;
+			}
+			else
+			{
+				this->numerator = new_numerator;
+				break;
+			}
+		}
+	}
+
+	int GetDenumerator() const {
+		return denumerator;
+	}
+
+	void SetDenumerator() {
+		int new_denumerator=this->denumerator;
+		while (true) {
+			if (new_denumerator == 0) {
+				cout << "Enter new denumerator: ";
+				cin >> new_denumerator;
+			}
+			else
+			{
+				this->denumerator = new_denumerator;
+				break;
+			}
+		}
+	}
+	
 
 };
 
@@ -74,6 +134,8 @@ void main() {
 	cin >> denum1;
 
 	Fraction fraction1(num1, denum1);
+	fraction1.SetNumerator();
+	fraction1.SetDenumerator();
 
 	cout << endl;
 
@@ -86,6 +148,8 @@ void main() {
 	cin >> denum2;
 
 	Fraction fraction2(num2, denum2);
+	fraction2.SetNumerator();
+	fraction2.SetDenumerator();
 
 	cout << endl;
 	Fraction result1 = fraction1.Addition(fraction2);
